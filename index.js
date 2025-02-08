@@ -21,18 +21,25 @@ async function run() {
     await client.connect();
     const menuCollection = client.db("restaurant").collection("Menu");
     const reviewCollection = client.db("restaurant").collection("reviews");
+    const orderCollection = client.db("restaurant").collection("orders");
 
     app.get ('/menu', async(req, res) =>{
       const menuData = await 
       menuCollection.find().toArray()
       res.send(menuData);
     })
-    app.get ('/reviews', async(req , res)=>{
+   app.get ('/reviews', async(req , res)=>{
       const result = await
       reviewCollection.find().toArray()
       res.send(result);
     })
-
+  
+    // order add to card api
+    app.post('/order', async(req,res)=>{
+      const result = await
+      orderCollection.insertOne().toArray()
+      res.send(result)
+    })
     
   } finally {
     // Ensures that the client will close when you finish/error
