@@ -21,7 +21,7 @@ async function run() {
     await client.connect();
     const menuCollection = client.db("restaurant").collection("Menu");
     const reviewCollection = client.db("restaurant").collection("reviews");
-    const orderCollection = client.db("restaurant").collection("orders");
+    const cartCollection = client.db("restaurant").collection("carts");
 
     app.get ('/menu', async(req, res) =>{
       const menuData = await 
@@ -34,10 +34,17 @@ async function run() {
       res.send(result);
     })
   
-    // order add to card api
-    app.post('/order', async(req,res)=>{
+    // add to card api
+    app.post('/carts', async(req,res)=>{
+      const cart = req.body;
       const result = await
-      orderCollection.insertOne().toArray()
+      cartCollection.insertOne(cart)
+      res.send(result)
+    })
+    app.get('/carts', async(req, res)=>{
+      const email = req.query.email
+      const query ={ email:email}
+      const result = await cartCollection.find(query).toArray()
       res.send(result)
     })
     
